@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-3">
+  {% if mode == "create" %}Добавить книгу{% else %}Редактировать книгу{% endif %}
+</h2>
+
+<form method="POST" class="row g-3">
+  <div class="col-md-6">
+    <label class="form-label">Название</label>
+    <input class="form-control" name="title" value="{{ b.title if b else '' }}" required>
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Автор</label>
+    <input class="form-control" name="author" value="{{ b.author if b else '' }}" required>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Год</label>
+    <input class="form-control" name="year" type="number" value="{{ b.year if b else 2000 }}" required>
+  </div>
+  <div class="col-md-5">
+    <label class="form-label">Категория</label>
+    <input class="form-control" name="category" value="{{ b.category if b else '' }}" required>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Статус</label>
+    <input class="form-control" name="status" value="{{ b.status if b else 'Активна' }}">
+  </div>
+
+  <div class="col-md-12">
+    <label class="form-label">Описание</label>
+    <textarea class="form-control" name="description" rows="3">{{ b.description if b else '' }}</textarea>
+  </div>
+
+  <div class="col-md-12">
+    <label class="form-label">Ссылка на обложку (URL)</label>
+    <input class="form-control" name="cover_url" value="{{ b.cover_url if b else '' }}">
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Покупка (₽)</label>
+    <input class="form-control" name="price_buy" type="number" value="{{ b.price_buy if b else 499 }}">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Аренда 2 недели (₽)</label>
+    <input class="form-control" name="price_rent_2w" type="number" value="{{ b.price_rent_2w if b else 149 }}">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Аренда 1 месяц (₽)</label>
+    <input class="form-control" name="price_rent_1m" type="number" value="{{ b.price_rent_1m if b else 249 }}">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Аренда 3 месяца (₽)</label>
+    <input class="form-control" name="price_rent_3m" type="number" value="{{ b.price_rent_3m if b else 449 }}">
+  </div>
+
+  <div class="col-md-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="available" {% if b and b.available %}checked{% endif %} {% if not b %}checked{% endif %}>
+      <label class="form-check-label">Книга доступна пользователям</label>
+    </div>
+  </div>
+
+  <div class="col-md-12 d-flex gap-2">
+    <button class="btn btn-wow" type="submit">Сохранить</button>
+    <a class="btn btn-ghost" href="/admin/books">Отмена</a>
+  </div>
+</form>
+
+{% endblock %}

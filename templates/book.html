@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row g-4">
+  <div class="col-md-5">
+    <img class="w-100 rounded" style="max-height:420px; object-fit:cover;" src="{{ b.cover_url }}" alt="cover">
+  </div>
+
+  <div class="col-md-7">
+    <h2 class="mb-1">{{ b.title }}</h2>
+    <div class="text-muted">{{ b.author }} · {{ b.year }} · <span class="badge-chip">{{ b.category }}</span></div>
+    <div class="mt-2 text-muted">Статус: {{ b.status }} · Доступность: {% if b.available %}✅ доступна{% else %}⛔ недоступна{% endif %}</div>
+
+    <p class="mt-3">{{ b.description }}</p>
+
+    <hr>
+
+    <h5>Купить или арендовать</h5>
+
+    {% if not current_user.is_authenticated %}
+      <div class="alert alert-warning">
+        Чтобы купить/арендовать книгу — войдите или зарегистрируйтесь.
+      </div>
+      <a class="btn btn-wow" href="/login">Войти</a>
+      <a class="btn btn-ghost" href="/register">Регистрация</a>
+    {% else %}
+      <form method="POST" action="/buy/{{ b.id }}" class="row g-2">
+        <div class="col-md-8">
+          <select class="form-select" name="type">
+            <option value="BUY">Покупка — {{ b.price_buy }} ₽</option>
+            <option value="RENT_2W">Аренда 2 недели — {{ b.price_rent_2w }} ₽</option>
+            <option value="RENT_1M">Аренда 1 месяц — {{ b.price_rent_1m }} ₽</option>
+            <option value="RENT_3M">Аренда 3 месяца — {{ b.price_rent_3m }} ₽</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-grid">
+          <button class="btn btn-wow" type="submit">Оформить</button>
+        </div>
+      </form>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}

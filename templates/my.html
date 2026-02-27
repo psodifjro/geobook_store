@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-3">Мои покупки и аренды</h2>
+
+<div class="row g-3">
+  <div class="col-md-8">
+    <h5>Заказы</h5>
+    {% for o in orders %}
+      <div class="p-3 mb-2 rounded" style="background: rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.45);">
+        <div class="fw-bold">{{ o.book.title }}</div>
+        <div class="text-muted">
+          Тип: {{ o.order_type }} · Цена: {{ o.price }} ₽ · Дата: {{ o.created_at.strftime("%Y-%m-%d %H:%M") }}
+        </div>
+
+        {% if o.order_type != "BUY" %}
+          <div class="text-muted">
+            Аренда: {{ o.start_date.strftime("%Y-%m-%d") }} → {{ o.end_date.strftime("%Y-%m-%d") }}
+            · Статус: {% if o.is_active %}✅ активна{% else %}⏳ завершена{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="text-muted">Пока нет заказов.</div>
+    {% endfor %}
+  </div>
+
+  <div class="col-md-4">
+    <h5>Уведомления</h5>
+    {% for n in notes %}
+      <div class="p-3 mb-2 rounded" style="background: rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.45);">
+        <div class="{% if not n.is_read %}fw-bold{% endif %}">{{ n.message }}</div>
+        <div class="text-muted">{{ n.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+
+        {% if not n.is_read %}
+          <form method="POST" action="/notification/read/{{ n.id }}" class="mt-2">
+            <button class="btn btn-ghost btn-sm" type="submit">Отметить прочитанным</button>
+          </form>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="text-muted">Нет уведомлений.</div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

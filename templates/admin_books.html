@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="m-0">Книги</h2>
+  <a class="btn btn-wow" href="/admin/books/new">+ Добавить книгу</a>
+</div>
+
+<div class="table-responsive">
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>ID</th><th>Название</th><th>Автор</th><th>Категория</th><th>Год</th>
+      <th>Доступность</th><th>Статус</th><th>Цена (покупка)</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for b in books %}
+      <tr>
+        <td>{{ b.id }}</td>
+        <td class="fw-bold">{{ b.title }}</td>
+        <td>{{ b.author }}</td>
+        <td>{{ b.category }}</td>
+        <td>{{ b.year }}</td>
+        <td>{% if b.available %}✅{% else %}⛔{% endif %}</td>
+        <td>{{ b.status }}</td>
+        <td>{{ b.price_buy }} ₽</td>
+        <td class="text-end">
+          <a class="btn btn-ghost btn-sm" href="/admin/books/edit/{{ b.id }}">Изменить</a>
+          <form method="POST" action="/admin/books/delete/{{ b.id }}" style="display:inline;">
+            <button class="btn btn-danger btn-sm" type="submit">Удалить</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock %}

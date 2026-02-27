@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero mb-4">
+  <h2 class="mb-2">Каталог книг</h2>
+  <p class="text-muted mb-0">
+    Выбирай книги, сортируй по автору/категории/году, покупай или арендуй.
+  </p>
+</section>
+
+<form class="row g-2 mb-4" method="GET" action="/">
+  <div class="col-md-4">
+    <select class="form-select" name="category">
+      <option value="">Категория (все)</option>
+      {% for c in categories %}
+        <option value="{{ c }}" {% if selected.category == c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-4">
+    <select class="form-select" name="author">
+      <option value="">Автор (все)</option>
+      {% for a in authors %}
+        <option value="{{ a }}" {% if selected.author == a %}selected{% endif %}>{{ a }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <select class="form-select" name="year">
+      <option value="">Год</option>
+      {% for y in years %}
+        <option value="{{ y }}" {% if selected.year == y|string %}selected{% endif %}>{{ y }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-2 d-grid">
+    <button class="btn btn-wow" type="submit">Сортировать</button>
+  </div>
+</form>
+
+<div class="grid">
+  {% for b in books %}
+    <div class="book-card">
+      <img class="cover" src="{{ b.cover_url }}" alt="cover">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="fw-bold">{{ b.title }}</div>
+            <div class="meta">{{ b.author }} · {{ b.year }}</div>
+          </div>
+          <span class="badge-chip">{{ b.category }}</span>
+        </div>
+
+        <div class="meta mt-2">Статус: {{ b.status }}</div>
+
+        <div class="d-grid mt-3">
+          <a class="btn btn-ghost" href="/book/{{ b.id }}">Открыть</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
